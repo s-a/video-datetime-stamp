@@ -1,0 +1,25 @@
+ffmpeg -i "test.mp4" -vf "drawtext=expansion=strftime: fontfile=arial.ttf: text='%a %d\.%m\.%Y / %H\:%M\:%S': x=10:y=10: fontcolor=white: box=1: boxcolor=0x00000000@1: basetime=1031003997000000" -t 24 -y out7.mp4
+
+ 241945627
+ 241945627000000
+
+ 242003227000000
+
+ 241945627000000
+ 237100027000000
+
+ 1062537681000000
+
+ 1031003997000000
+
+ ffmpeg -i "test.mp4" -vf "drawtext=expansion=strftime: fontfile=c:/git/video-datetime-stamp/font/OpenSans-Regular.ttf: text='%a %d.%m.%Y / %H:%M:%S': x=10:y=10: fontcolor=white: box=1: boxcolor=0x00000000@1: basetime=1031003997000000" -t 24 -y out7.mp4
+
+
+
+
+ ffmpeg -i "test.mp4" -vf "drawtext=expansion=strftime: fontfile=c:/git/video-datetime-stamp/font/OpenSans-Regular.ttf: text='%a %d\.%m\.%Y / %H\:%M\:%S': x=10:y=10: fontcolor=white: box=1: boxcolor=0x00000000@1: basetime=
+1031003997000000" -t 24 -y out7.mp4
+1422003014000
+1422002392
+
+ffmpeg -i "test.mp4" -vf "drawtext=expansion=strftime: fontfile=c:/git/video-datetime-stamp/font/OpenSans-Regular.ttf: text='%a %d\.%m\.%Y / %H\:%M\:%S': x=10:y=10: fontcolor=white: box=1: boxcolor=0x00000000@1: basetime=1031003997000000" -t 24 -y test.stamped.mp4
