@@ -28,4 +28,5 @@ node_modules
 .lock-wscript
 
 *.mp4
+!video/*.mp4
 *.stackdump
