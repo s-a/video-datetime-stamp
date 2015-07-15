@@ -1,6 +1,7 @@
 # video-datetime-stamp
-Render a date/time stamp into videos using ffmpeg
+Render a date/time stamp into videos using ffmpeg  
 [<img src="https://travis-ci.org/s-a/video-datetime-stamp.png" />](https://travis-ci.org/s-a/video-datetime-stamp "Test state")
+[![Donate](http://s-a.github.io/donate/donate.svg)](http://s-a.github.io/donate/)
 
 Render date time stamps to videos with ffmpeg is annoying.
 This node js command line is an easement to do this job.
