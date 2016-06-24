@@ -30,3 +30,4 @@ node_modules
 *.mp4
 !video/*.mp4
 *.stackdump
+/video/BigBuckBunny_320x180.stamped.mp4

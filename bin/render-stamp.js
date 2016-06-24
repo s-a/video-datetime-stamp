@@ -17,7 +17,8 @@ function getVideoDuration(filename){
 	var exec = require('child_process').exec;
 	var child;
 	var cmd = "ffmpeg -i " + filename + " 2>&1 | grep \"Duration\"| cut -d ' ' -f 4 | sed s/,//";
-	var duration =  (shell.exec(cmd).output.replace(/\n/g, "").replace(/\r/g, ""));
+	var c = shell.exec(cmd);
+	var duration =  (c.replace(/\n/g, "").replace(/\r/g, ""));
     duration = duration.replace(/\n/g, "").split(":");
     var result = {
     	hours : parseInt(duration[0]),

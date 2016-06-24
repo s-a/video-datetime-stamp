@@ -15,9 +15,6 @@
   "scripts": {
     "test": "mocha test"
   },
-  "engines": {
-    "node": ">=0.8.0"
-  },
   "dependencies": {
     "commander":"",
     "shelljs":"",
