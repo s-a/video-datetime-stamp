@@ -1,28 +1,28 @@
-var fs = require("fs");
-var assert = require("assert");
-var shell = require('shelljs');
-var path = require('path'); 
+let fs = require("fs");
+let assert = require("assert");
+let shell = require('shelljs');
+let path = require('path');
+let output = null;
+const { doesNotMatch } = require("assert");
 require('should');
 
-/*var program = require('commander');
-var fs = require('fs');
-var moment = require('moment');
-*/
-var scriptFilename = path.join(__dirname, "..", "bin", "render-stamp.js");
-var videoFilename = path.join(__dirname, "..", "video", "BigBuckBunny_320x180.mp4");
-var videoOutFilename = path.join(__dirname, "..", "video", "BigBuckBunny_320x180.stamped.mp4");
+let scriptFilename = path.join(__dirname, "..", "bin", "render-stamp.js");
+let videoFilename = path.join(__dirname, "..", "video", "BigBuckBunny_320x180.mp4");
+let videoOutFilename = path.join(__dirname, "..", "video", "BigBuckBunny_320x180.stamped.mp4");
 
+let renderVideo = ()=>{
+	let exitCode = shell.exec("node " + scriptFilename + " --file "  + videoFilename + " --test 2").code;
+	return exitCode;
+};	
 
-describe('render a time stamp to MP4', function(){;
-	this.timeout(5000);
-    it('should exit with error code 0', function(){;
-    	var exitCode = shell.exec("node " + scriptFilename + " --file "  + videoFilename + " --test 2").code;
-		exitCode.should.be.equal(0);
+output = renderVideo();
+
+describe('render a time stamp to MP4', ()=>{
+	it('should exit with error code 0', ()=>{
+		output.should.be.equal(0);
   	});
 
-    it('should exists an output file', function(){;
-    	
+    it('should exists an output file', ()=>{
 		fs.existsSync(videoOutFilename).should.be.true;
   	});
-
 });

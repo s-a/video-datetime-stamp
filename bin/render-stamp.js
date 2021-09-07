@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 
-var program = require('commander');
-var fs = require('fs');
-var path = require('path');
-var moment = require('moment');
-var shell = require('shelljs');
+let program = require('commander');
+let fs = require('fs');
+let path = require('path');
+let moment = require('moment');
+let shell = require('shelljs');
+let filename = '';
+let os = process.platform;
+let p = null;
+let dirname = '';
+let result = null;
 
 program
   .version('0.0.1')
@@ -13,21 +18,47 @@ program
   .option('-t, --test <n>', 'Render only n seconds of a video for test purposes', parseFloat)
   .parse(process.argv);
 
-function getVideoDuration(filename){
-	var exec = require('child_process').exec;
-	var child;
-	var cmd = "ffmpeg -i " + filename + " 2>&1 | grep \"Duration\"| cut -d ' ' -f 4 | sed s/,//";
-	var c = shell.exec(cmd);
-	var duration =  (c.replace(/\n/g, "").replace(/\r/g, ""));
-    duration = duration.replace(/\n/g, "").split(":");
-    var result = {
-    	hours : parseInt(duration[0]),
-    	minutes : parseInt(duration[1]),
-    	seconds : parseInt(duration[2].split(".")[0]),
-    	milliseconds : parseInt(duration[2].split(".")[1])
-    };
-  	return result;
+filename = program['rawArgs'][3];
+
+for(let i = 0; i < filename.length; i++){
+	if(filename[i] != '/' && filename[i] != ':'){
+		dirname += filename[i];
+	}
+	else if(dirname != ''){
+		if(filename[i] == '/'){
+			dirname += filename[i];
+		}
+		else if(filename[i] == '\\'){
+			dirname += filename[i];
+		}
+	}
 }
+
+if(os.toLowerCase() === 'win32'){
+	p = '..\\' + dirname.split('\\').slice(2,-1).join('\\');
+}
+else {
+	p = '../' + dirname.split('/').slice(2,-1).join('/');
+}
+
+function getVideoDuration(filename){
+	if(filename != undefined && filename != null){
+		let exec = require('child_process').exec;
+		let child;
+		let cmd = "ffmpeg -i " + filename + " 2>&1 | grep \"Duration\"| cut -d ' ' -f 4 | sed s/,//";
+		let c = shell.exec(cmd);
+		let duration =  (c.replace(/\n|\r/g, ""));//.replace(/\r/g, "")
+		duration = duration.replace(/\n/g, "").split(":");
+		result = {
+			hours : parseInt(duration[0]),
+			minutes : parseInt(duration[1]),
+			seconds : parseInt(duration[2].split(".")[0]),
+			milliseconds : parseInt(duration[2].split(".")[1])
+		};
+	}
+	return result;
+}
+
 
 function logVideoTimeInfo(name, videoTime) {
 	console.log(name, moment(videoTime).format("dddd, MMMM Do YYYY, h:mm:ss a") , moment(videoTime).fromNow());
@@ -44,9 +75,21 @@ function getVideoStartTime(videoEndTime, duration){
 
 function getFiles (dir, files_){
     files_ = files_ || [];
-    var files = fs.readdirSync(dir);
-    for (var i in files){
-        var name = dir + '/' + files[i];
+	if(os.toLowerCase() === 'win32'){
+		dir = '\\' + dir.split('\\').slice(0,-1).join('\\');
+	}
+	else {
+		dir = '/' + dir.split('/').slice(0,-1).join('/');
+	}
+	let files = fs.readdirSync(dir);
+    for (let i in files){
+        let name = dir;
+		if(os.toLowerCase() === 'win32' && dir[0] != '\\'){
+			name += '\\' + files[i];
+		}
+		else {
+			name += '/' + files[i];
+		}
         if (fs.statSync(name).isDirectory()){
             getFiles(name, files_);
         } else {
@@ -60,33 +103,32 @@ function getFiles (dir, files_){
 
 
 function convertVideo(filename) {
-	var outputFilename = filename.split(".");
+	let outputFilename = filename.split(".");
+
 	outputFilename.splice(outputFilename.length-1, 0, "stamped");
 	outputFilename = outputFilename.join(".");
 	console.log("Rendering", filename , "to", outputFilename);
 
-	var exec = require('child_process');
-	var fontFilename = path.join(/*__dirname, ".." ,*/"font", "OpenSans-Regular.ttf").replace(/\\/g, "/");
+	let exec = require('child_process');
+	let fontFilename = path.join(__dirname, ".." ,"font", "OpenSans-Regular.ttf").replace(/\\/g, "/");
 	console.log("font:",fontFilename);
-//	fontFilename = "OpenSans-Regular.ttf";
-
-
-	var videoTime = fs.statSync(filename).mtime.getTime();// + "000";
+	
+	let videoTime = fs.statSync(filename).mtime.getTime();// + "000";
 
 	logVideoTimeInfo("video end", videoTime);
 	
-	var duration = getVideoDuration(filename);
+	let duration = getVideoDuration(filename);
 	console.log("duration: ", duration);
 	
 
-	var startTime = getVideoStartTime(videoTime, duration);
+	let startTime = getVideoStartTime(videoTime, duration);
 	logVideoTimeInfo("video start", startTime);
-	var basetime =  startTime.toDate().getTime() + "000";
+	let basetime =  startTime.toDate().getTime() + "000";
 
 	console.log("ffmpeg basetime:", basetime);
 
-	var command = "ffmpeg";
-	var parms = [];
+	let command = "ffmpeg";
+	let parms = [];
 	parms.push ("-i \"" + filename + "\"");
 	parms.push ("-f MP4");
 	parms.push ("-vf \"drawtext=expansion=strftime: fontfile=" + fontFilename + ": text='%a %d\\.%m\\.%Y / %H\\:%M\\:%S': x=10:y=10: fontcolor=white: box=1: boxcolor=0x00000000@1: basetime="+basetime+"\"");
@@ -101,17 +143,24 @@ function convertVideo(filename) {
 	if (shell.exec(command + " " + parms.join(" ")).code === 0){
 		console.log("done.");
 	}
-};
-
-if (program.file)  {
-	var filename = program.file;
-	convertVideo(filename);
 }
 
-if (program.dir)  {
-	var files = getFiles(program.dir);
-	for (var i = 0; i < files.length; i++) {
-		var fn = files[i];
+if (filename != undefined && filename != null)  {
+	let duration = getVideoDuration(filename);
+	console.log("duration: ", duration);
+	convertVideo(filename);
+}
+else if(filename == undefined || filename == null){
+	console.log(`I am sorry, the file: ${ filename } is not present!`);
+}
+
+if (dirname != undefined && dirname != null)  {
+	let files = getFiles(dirname);
+	for (let i = 0; i < files.length; i++) {
+		let fn = files[i];
 		convertVideo(fn);
 	};
+}
+else if(dirname == undefined || dirname == null){
+	console.log(`I am sorry, the folder: ${ dirname } is not present!`);
 }

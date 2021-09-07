@@ -17,12 +17,12 @@
     "bump": "npm version patch && git push && git push --tags && npm publish"
   },
   "dependencies": {
-    "commander":"",
-    "shelljs":"",
-    "moment":""
+    "commander": "",
+    "moment": "",
+    "shelljs": ""
   },
   "devDependencies": {
-    "mocha":"",
-    "should":""
+    "mocha": "^9.1.1",
+    "should": ""
   }
 }

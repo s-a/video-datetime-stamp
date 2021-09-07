@@ -1,3 +1,8 @@
+These test are run on a MacOS Big Sur 11.5.2
+To test this successfully first run:
+
+npm install
+
 ffmpeg -i "test.mp4" -vf "drawtext=expansion=strftime: fontfile=arial.ttf: text='%a %d\.%m\.%Y / %H\:%M\:%S': x=10:y=10: fontcolor=white: box=1: boxcolor=0x00000000@1: basetime=1031003997000000" -t 24 -y out7.mp4
 
  241945627
@@ -12,7 +17,7 @@ ffmpeg -i "test.mp4" -vf "drawtext=expansion=strftime: fontfile=arial.ttf: text=
 
  1031003997000000
 
- ffmpeg -i "test.mp4" -vf "drawtext=expansion=strftime: fontfile=c:/git/video-datetime-stamp/font/OpenSans-Regular.ttf: text='%a %d.%m.%Y / %H:%M:%S': x=10:y=10: fontcolor=white: box=1: boxcolor=0x00000000@1: basetime=1031003997000000" -t 24 -y out7.mp4
+ ffmpeg -i "test.mp4" -vf "drawtext=expansion=strftime: fontfile=./font/OpenSans-Regular.ttf: text='%a %d.%m.%Y / %H:%M:%S': x=10:y=10: fontcolor=white: box=1: boxcolor=0x00000000@1: basetime=1031003997000000" -t 24 -y out7.mp4
 
 
 
