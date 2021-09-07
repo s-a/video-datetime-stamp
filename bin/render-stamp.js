@@ -47,13 +47,23 @@ function getVideoDuration(filename){
 		let child;
 		let cmd = "ffmpeg -i " + filename + " 2>&1 | grep \"Duration\"| cut -d ' ' -f 4 | sed s/,//";
 		let c = shell.exec(cmd);
-		let duration =  (c.replace(/\n|\r/g, ""));//.replace(/\r/g, "")
+		let duration =  (c.replace(/\n|\r/g, ""));
 		duration = duration.replace(/\n/g, "").split(":");
 		result = {
 			hours : parseInt(duration[0]),
 			minutes : parseInt(duration[1]),
-			seconds : parseInt(duration[2].split(".")[0]),
-			milliseconds : parseInt(duration[2].split(".")[1])
+			seconds : parseInt(()=>{
+				if(duration[2] != undefined && duration[2] != null){
+					return duration[2].split(".")[0];
+				}
+				return 0;
+			}),
+			milliseconds : parseInt(()=>{
+				if(duration[2] != undefined && duration[2] != null){
+					return duration[2].split(".")[1];
+				}
+				return 0;
+			})
 		};
 	}
 	return result;
