@@ -12,8 +12,3 @@ This command creates an output file at c:/git/video-datetime-stamp/test.stamped.
 
 This command will stamp every mp4 file in c:\video\  
 ```node ./bin/render-stamp.js --dir c:\video\```
-
-The command below with your user name works also
-```node ./bin/render-stamp.js --dir /Users/$USER/testVideoDir```
-
-As always, let me know if there are any bugs. I will make sure that --file only, --dir only and both --file and --dir work.
