@@ -1,5 +1,6 @@
 {
-  "author": "Stephan Ahlf <stephan@ahlf-it.de> (http://www.ahlt-it.de/)",
+  "author":"Stephan Ahlf <stephan@ahlf-it.de> (http://www.ahlt-it.de/)",
+  "contributor": "Dmitri Dimov <dimametahnet@gmail.com> (https://github.com/metahnetoutage/video-datetime-stamp/)",
   "preferGlobal": true,
   "name": "video-date-time-stamp",
   "description": "Render a date/time stamp into videos using ffmpeg.",
