@@ -5,7 +5,6 @@ let fs = require('fs');
 let path = require('path');
 let moment = require('moment');
 let shell = require('shelljs');
-const { dir } = require('console');
 let filename = '';
 let dirname = '';
 let os = process.platform;
