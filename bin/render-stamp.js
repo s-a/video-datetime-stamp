@@ -68,7 +68,6 @@ else if(fl == -1 && dl > -1){
 			dirname = '../' + dirname;
 		}
 	}
-	console.log(dirname);
 }
 else if(fl > -1 && dl > -1){
 	filename = program['rawArgs'][fl + 1];
